@@ -49,7 +49,7 @@ public class FluxAndMonoGeneratorServiceTest {
     @Test
     void nameFlux_FlatMap() {
         Integer stringLength = 4;
-        var fluxFlatMap = fluxAndMonoGeneratorService.nameFlux_FlatMap(stringLength);
+        var fluxFlatMap = fluxAndMonoGeneratorService.nameFluxFlatMap(stringLength);
 
         StepVerifier.create(fluxFlatMap)
                 .expectNextCount(20)
@@ -62,6 +62,15 @@ public class FluxAndMonoGeneratorServiceTest {
 
         StepVerifier.create(monoFlatMap)
                 .expectNext(List.of("A","R","K","A"," ","B","H","U","I","Y","A","N"))
+                .verifyComplete();
+    }
+
+    @Test
+    void nameFluxFlatMapAsync() {
+        var fluxFlatMapAsync = fluxAndMonoGeneratorService.nameFluxFlatMapAsync(4);
+
+        StepVerifier.create(fluxFlatMapAsync)
+                .expectNextCount(20)
                 .verifyComplete();
     }
 }

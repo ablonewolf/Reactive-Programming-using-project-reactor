@@ -1,14 +1,17 @@
 package com.learnreactiveprogramming.service;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.List;
+import java.util.Random;
 import java.util.function.Function;
 
 public class FluxAndMonoGeneratorService {
 
     public Flux<String> namesFlux() {
-        return Flux.fromIterable(List.of("Arka","Farhan","Akif","Nipa","Zareen","Mosfikur")).log();
+        return Flux.fromIterable(List.of("Arka", "Farhan", "Akif", "Nipa", "Zareen", "Mosfikur")).log();
     }
 
     public Mono<String> nameMono() {
@@ -24,23 +27,37 @@ public class FluxAndMonoGeneratorService {
 
     public Flux<String> nameFlux_map() {
         return Flux
-                .fromIterable(List.of("Arka","Farhan","Akif","Nipa","Zareen","Mosfikur"))
+                .fromIterable(List.of("Arka", "Farhan", "Akif", "Nipa", "Zareen", "Mosfikur"))
                 .filter(name -> name.length() > 4)
                 .map(String::toUpperCase)
                 .log();
     }
 
-    public Flux<String> nameFlux_FlatMap(Integer stringLength) {
-        Function<String,Flux<String>> splitName = name -> Flux.fromArray(name.split(""));
+    public Flux<String> nameFluxFlatMap(Integer stringLength) {
+        Function<String, Flux<String>> splitName = name -> Flux.fromArray(name.split(""));
         return Flux
-                .fromIterable(List.of("Arka","Farhan","Akif","Nipa","Zareen","Mosfikur"))
+                .fromIterable(List.of("Arka", "Farhan", "Akif", "Nipa", "Zareen", "Mosfikur"))
                 .filter(name -> name.length() > stringLength)
                 .flatMap(splitName)
                 .log();
     }
 
+    public Flux<String> nameFluxFlatMapAsync(Integer stringLength) {
+        return Flux
+                .fromIterable(List.of("Arka", "Farhan", "Akif", "Nipa", "Zareen", "Mosfikur"))
+                .filter(name -> name.length() > stringLength)
+                .flatMap(this::splitStringWithDelay)
+                .log();
+    }
+
+    private Flux<String> splitStringWithDelay(String name) {
+        Random random = new Random();
+        return Flux.fromArray(name.split(""))
+                .delayElements(Duration.ofMillis(random.nextInt(500)));
+    }
+
     public Mono<List<String>> nameMonoFlatMap() {
-        Function<String,Mono<List<String>>> splitName = name ->  Mono.just(List.of(name.toUpperCase().split("")));
+        Function<String, Mono<List<String>>> splitName = name -> Mono.just(List.of(name.toUpperCase().split("")));
         return Mono
                 .just("Arka Bhuiyan")
                 .flatMap(splitName)
