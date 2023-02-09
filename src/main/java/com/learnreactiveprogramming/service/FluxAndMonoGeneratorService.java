@@ -1,9 +1,9 @@
 package com.learnreactiveprogramming.service;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.function.Function;
 
 public class FluxAndMonoGeneratorService {
 
@@ -27,6 +27,23 @@ public class FluxAndMonoGeneratorService {
                 .fromIterable(List.of("Arka","Farhan","Akif","Nipa","Zareen","Mosfikur"))
                 .filter(name -> name.length() > 4)
                 .map(String::toUpperCase)
+                .log();
+    }
+
+    public Flux<String> nameFlux_FlatMap(Integer stringLength) {
+        Function<String,Flux<String>> splitName = name -> Flux.fromArray(name.split(""));
+        return Flux
+                .fromIterable(List.of("Arka","Farhan","Akif","Nipa","Zareen","Mosfikur"))
+                .filter(name -> name.length() > stringLength)
+                .flatMap(splitName)
+                .log();
+    }
+
+    public Mono<List<String>> nameMonoFlatMap() {
+        Function<String,Mono<List<String>>> splitName = name ->  Mono.just(List.of(name.toUpperCase().split("")));
+        return Mono
+                .just("Arka Bhuiyan")
+                .flatMap(splitName)
                 .log();
     }
 
