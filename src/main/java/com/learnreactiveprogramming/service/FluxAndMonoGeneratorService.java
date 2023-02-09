@@ -50,6 +50,14 @@ public class FluxAndMonoGeneratorService {
                 .log();
     }
 
+    public Flux<String> nameFluxConcatMap(Integer stringLength) {
+        return Flux
+                .fromIterable(List.of("Arka", "Farhan", "Akif", "Nipa", "Zareen", "Mosfikur"))
+                .filter(name -> name.length() > stringLength)
+                .concatMap(this::splitStringWithDelay)
+                .log();
+    }
+
     private Flux<String> splitStringWithDelay(String name) {
         Random random = new Random();
         return Flux.fromArray(name.split(""))
