@@ -72,6 +72,14 @@ public class FluxAndMonoGeneratorService {
                 .log();
     }
 
+    public Flux<String> nameMonoFlatMapMany() {
+        Function<String, Flux<String>> splitName = name -> Flux.fromArray(name.toUpperCase().split(""));
+        return Mono
+                .just("ArkaBhuiyan")
+                .flatMapMany(splitName)
+                .log();
+    }
+
     public static void main(String[] args) {
         FluxAndMonoGeneratorService fluxAndMonoGeneratorService = new FluxAndMonoGeneratorService();
 //        subscribing to the name flux

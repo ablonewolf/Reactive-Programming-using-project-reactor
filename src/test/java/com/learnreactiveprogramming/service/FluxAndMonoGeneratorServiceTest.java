@@ -82,4 +82,14 @@ public class FluxAndMonoGeneratorServiceTest {
                 .expectNextCount(20)
                 .verifyComplete();
     }
+
+    @Test
+    void testNameMonoFlatMapMany() {
+        var monoFlatMapMany = fluxAndMonoGeneratorService.nameMonoFlatMapMany();
+
+        StepVerifier.create(monoFlatMapMany)
+                .expectNext("A")
+                .expectNextCount(10)
+                .verifyComplete();
+    }
 }
