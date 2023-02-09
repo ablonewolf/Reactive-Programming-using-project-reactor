@@ -92,4 +92,14 @@ public class FluxAndMonoGeneratorServiceTest {
                 .expectNextCount(10)
                 .verifyComplete();
     }
+
+    @Test
+    void nameFluxTransform() {
+        var nameFluxTransform = fluxAndMonoGeneratorService.nameFluxTransform(4);
+
+        StepVerifier.create(nameFluxTransform)
+                .expectNext("F")
+                .expectNextCount(19)
+                .verifyComplete();
+    }
 }
