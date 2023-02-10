@@ -25,6 +25,15 @@ public class FluxAndMonoGeneratorService {
                 .log();
     }
 
+    public Mono<String> monoMapWithFilter(Integer stringLength) {
+        return Mono
+                .just("Arka")
+                .map(String::toUpperCase)
+                .filter(name -> name.length() > stringLength)
+                .defaultIfEmpty("default String")
+                .log();
+    }
+
     public Flux<String> nameFlux_map() {
         return Flux
                 .fromIterable(List.of("Arka", "Farhan", "Akif", "Nipa", "Zareen", "Mosfikur"))
@@ -86,9 +95,29 @@ public class FluxAndMonoGeneratorService {
 
     public Mono<List<String>> nameMonoFlatMap() {
         Function<String, Mono<List<String>>> splitName = name -> Mono.just(List.of(name.toUpperCase().split("")));
+
         return Mono
                 .just("Arka Bhuiyan")
                 .flatMap(splitName)
+                .log();
+    }
+
+    public Mono<List<String>> nameMonoTransformWithFilter(Integer stringLength) {
+        Function<String, Mono<List<String>>> splitName = name ->  Mono.just(List.of(name.toUpperCase().split("")));
+        Function<Mono<String>, Mono<List<String>>>
+                transformMono = name ->
+                name.map(String::toUpperCase)
+                        .filter(string -> string.length() > stringLength)
+                        .flatMap(splitName);
+
+        var defaultMono = Mono
+                .just("default")
+                .transform(transformMono);
+
+        return Mono
+                .just("Arka")
+                .transform(transformMono)
+                .switchIfEmpty(defaultMono)
                 .log();
     }
 

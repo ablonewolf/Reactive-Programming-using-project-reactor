@@ -123,4 +123,40 @@ public class FluxAndMonoGeneratorServiceTest {
                 .expectNextCount(12)
                 .verifyComplete();
     }
+
+    @Test
+    void monoMapWithFilter() {
+        var monoMapWithFilter = fluxAndMonoGeneratorService.monoMapWithFilter(3);
+
+        StepVerifier.create(monoMapWithFilter)
+                .expectNext("ARKA")
+                .verifyComplete();
+    }
+
+    @Test
+    void monoMapWithFilterDefaultIfEmpty() {
+        var monoMapWithFilter = fluxAndMonoGeneratorService.monoMapWithFilter(4);
+
+        StepVerifier.create(monoMapWithFilter)
+                .expectNext("default String")
+                .verifyComplete();
+    }
+
+    @Test
+    void nameMonoTransformWithFilter() {
+        var nameMonoTransform = fluxAndMonoGeneratorService.nameMonoTransformWithFilter(3);
+
+        StepVerifier.create(nameMonoTransform)
+                .expectNext(List.of("A","R","K","A"))
+                .verifyComplete();
+    }
+
+    @Test
+    void nameMonoTransformWithFilterSwitchIfEmpty() {
+        var nameMonoTransform = fluxAndMonoGeneratorService.nameMonoTransformWithFilter(4);
+
+        StepVerifier.create(nameMonoTransform)
+                .expectNext(List.of("D","E","F","A","U","L","T"))
+                .verifyComplete();
+    }
 }
