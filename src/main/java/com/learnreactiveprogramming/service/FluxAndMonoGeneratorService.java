@@ -10,6 +10,18 @@ import java.util.function.Function;
 
 public class FluxAndMonoGeneratorService {
 
+    public static void main(String[] args) {
+        FluxAndMonoGeneratorService fluxAndMonoGeneratorService = new FluxAndMonoGeneratorService();
+//        subscribing to the name flux
+        fluxAndMonoGeneratorService.namesFlux()
+                .subscribe(System.out::println);
+        System.out.println();
+//        subscribing to the name mono
+        fluxAndMonoGeneratorService.nameMono()
+                .subscribe(System.out::println);
+
+    }
+
     public Flux<String> namesFlux() {
         return Flux.fromIterable(List.of("Arka", "Farhan", "Akif", "Nipa", "Zareen", "Mosfikur")).log();
     }
@@ -56,9 +68,9 @@ public class FluxAndMonoGeneratorService {
         Function<String, Flux<String>> splitName = name -> Flux.fromArray(name.split(""));
         Function<Flux<String>, Flux<String>>
                 transformFlux = name ->
-                 name.map(String::toUpperCase)
-                .filter(string -> string.length() > stringLength)
-                .flatMap(splitName);
+                name.map(String::toUpperCase)
+                        .filter(string -> string.length() > stringLength)
+                        .flatMap(splitName);
 
         var defaultFlux = Flux
                 .just("defaultString")
@@ -103,7 +115,7 @@ public class FluxAndMonoGeneratorService {
     }
 
     public Mono<List<String>> nameMonoTransformWithFilter(Integer stringLength) {
-        Function<String, Mono<List<String>>> splitName = name ->  Mono.just(List.of(name.toUpperCase().split("")));
+        Function<String, Mono<List<String>>> splitName = name -> Mono.just(List.of(name.toUpperCase().split("")));
         Function<Mono<String>, Mono<List<String>>>
                 transformMono = name ->
                 name.map(String::toUpperCase)
@@ -131,27 +143,25 @@ public class FluxAndMonoGeneratorService {
 
     public Flux<String> fluxConcat() {
         return Flux
-                .concat(Flux.just("A","B","C")
-                ,Flux.just("D","E","F")).log();
+                .concat(Flux.just("A", "B", "C")
+                        , Flux.just("D", "E", "F")).log();
     }
 
     public Flux<String> fluxConcatWith() {
+        return Flux
+                .just("Arka", "Nipa")
+                .concatWith(
+                        Flux.
+                                just("Farhan", "Akif")
+                ).log();
+
+    }
+
+    public Flux<String> monoConcatWith() {
         return Mono
                 .just("Arka")
                 .concatWith(
                         Mono.just("Bhuiyan")
-                );
-    }
-
-    public static void main(String[] args) {
-        FluxAndMonoGeneratorService fluxAndMonoGeneratorService = new FluxAndMonoGeneratorService();
-//        subscribing to the name flux
-        fluxAndMonoGeneratorService.namesFlux()
-                .subscribe(System.out::println);
-        System.out.println();
-//        subscribing to the name mono
-        fluxAndMonoGeneratorService.nameMono()
-                .subscribe(System.out::println);
-
+                ).log();
     }
 }
