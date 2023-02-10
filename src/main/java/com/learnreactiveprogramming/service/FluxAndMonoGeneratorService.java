@@ -129,6 +129,18 @@ public class FluxAndMonoGeneratorService {
                 .log();
     }
 
+    public Flux<String> fluxConcat() {
+        return Flux
+                .concat(Flux.just("A","B","C")
+                ,Flux.just("D","E","F")).log();
+    }
+
+    public Flux<String> fluxConcatWith() {
+        return Flux
+                .concat(Mono.just("Arka")
+                ,Mono.just("Bhuiyan")).log();
+    }
+
     public static void main(String[] args) {
         FluxAndMonoGeneratorService fluxAndMonoGeneratorService = new FluxAndMonoGeneratorService();
 //        subscribing to the name flux

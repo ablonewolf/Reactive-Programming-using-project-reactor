@@ -159,4 +159,24 @@ public class FluxAndMonoGeneratorServiceTest {
                 .expectNext(List.of("D","E","F","A","U","L","T"))
                 .verifyComplete();
     }
+
+    @Test
+    void fluxConcat() {
+        var fluxConcat = fluxAndMonoGeneratorService.fluxConcat();
+
+        StepVerifier.create(fluxConcat)
+                .expectNext("A")
+                .expectNextCount(5)
+                .verifyComplete();
+    }
+
+    @Test
+    void fluxConcatWith() {
+        var fluxConcatWith = fluxAndMonoGeneratorService.fluxConcatWith();
+
+        StepVerifier.create(fluxConcatWith)
+                .expectNext("Arka")
+                .expectNext("Bhuiyan")
+                .verifyComplete();
+    }
 }
