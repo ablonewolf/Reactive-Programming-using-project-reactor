@@ -47,7 +47,7 @@ public class FluxAndMonoGeneratorServiceTest {
     }
 
     @Test
-    void nameFlux_FlatMap() {
+    void nameFluxFlatMap() {
         Integer stringLength = 4;
         var fluxFlatMap = fluxAndMonoGeneratorService.nameFluxFlatMap(stringLength);
 
@@ -55,6 +55,17 @@ public class FluxAndMonoGeneratorServiceTest {
                 .expectNextCount(20)
                 .verifyComplete();
     }
+
+    @Test
+    void nameFluxFlatMapDefaultIfEmpty() {
+        Integer stringLength = 8;
+        var fluxFlatMap = fluxAndMonoGeneratorService.nameFluxFlatMap(stringLength);
+
+        StepVerifier.create(fluxFlatMap)
+                .expectNext("default String")
+                .verifyComplete();
+    }
+
 
     @Test
     void nameMonoFlatMap() {
@@ -100,6 +111,16 @@ public class FluxAndMonoGeneratorServiceTest {
         StepVerifier.create(nameFluxTransform)
                 .expectNext("F")
                 .expectNextCount(19)
+                .verifyComplete();
+    }
+
+    @Test
+    void nameFluxTransformSwitchIfEmpty() {
+        var nameFluxTransform = fluxAndMonoGeneratorService.nameFluxTransform(8);
+
+        StepVerifier.create(nameFluxTransform)
+                .expectNext("D")
+                .expectNextCount(12)
                 .verifyComplete();
     }
 }
