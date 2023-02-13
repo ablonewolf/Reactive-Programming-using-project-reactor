@@ -7,6 +7,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.List;
 import java.util.Random;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 @Slf4j
@@ -302,6 +303,21 @@ public class FluxAndMonoGeneratorService {
                 .just("a", "b", "c")
                 .concatWith(Flux.error(exception))
                 .onErrorResume(errorResumeFunction)
+                .log();
+    }
+
+    public Flux<String> exploreOnErrorContinue() {
+
+        Function<String, String> toUpperCase = name -> {
+            if (name.equals("Nusaiba"))
+                throw new IllegalStateException("Cannot change it to upper case");
+            return name.toUpperCase();
+        };
+        BiConsumer<Throwable, Object> errorContinueFunction = (ex, message) -> System.out.println(ex + ". \nThe name is " + message);
+        return Flux
+                .just("Arka", "Nusaiba", "Farhan", "Zareen")
+                .map(toUpperCase)
+                .onErrorContinue(errorContinueFunction)
                 .log();
     }
 }
