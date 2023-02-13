@@ -35,6 +35,7 @@ public class MovieReactiveService {
                     return reviewsMono
                             .map(reviews -> new Movie(movieInfo, reviews)).log();
                 })
+                .retry(5)
                 .onErrorMap(convertToMovieException)
                 .log();
     }
