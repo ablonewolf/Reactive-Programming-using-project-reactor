@@ -8,6 +8,7 @@ import java.util.List;
 public class FluxAndMonoGeneratorServiceTest {
 
     FluxAndMonoGeneratorService fluxAndMonoGeneratorService = new FluxAndMonoGeneratorService();
+
     @Test
     void namesFlux() {
         var namesFlux = fluxAndMonoGeneratorService.namesFlux();
@@ -72,7 +73,7 @@ public class FluxAndMonoGeneratorServiceTest {
         var monoFlatMap = fluxAndMonoGeneratorService.nameMonoFlatMap();
 
         StepVerifier.create(monoFlatMap)
-                .expectNext(List.of("A","R","K","A"," ","B","H","U","I","Y","A","N"))
+                .expectNext(List.of("A", "R", "K", "A", " ", "B", "H", "U", "I", "Y", "A", "N"))
                 .verifyComplete();
     }
 
@@ -147,7 +148,7 @@ public class FluxAndMonoGeneratorServiceTest {
         var nameMonoTransform = fluxAndMonoGeneratorService.nameMonoTransformWithFilter(3);
 
         StepVerifier.create(nameMonoTransform)
-                .expectNext(List.of("A","R","K","A"))
+                .expectNext(List.of("A", "R", "K", "A"))
                 .verifyComplete();
     }
 
@@ -156,7 +157,7 @@ public class FluxAndMonoGeneratorServiceTest {
         var nameMonoTransform = fluxAndMonoGeneratorService.nameMonoTransformWithFilter(4);
 
         StepVerifier.create(nameMonoTransform)
-                .expectNext(List.of("D","E","F","A","U","L","T"))
+                .expectNext(List.of("D", "E", "F", "A", "U", "L", "T"))
                 .verifyComplete();
     }
 
@@ -187,6 +188,38 @@ public class FluxAndMonoGeneratorServiceTest {
         StepVerifier.create(fluxConcatWith)
                 .expectNext("Arka")
                 .expectNextCount(3)
+                .verifyComplete();
+    }
+
+    @Test
+    void fluxMerge() {
+        var mergedFlux = fluxAndMonoGeneratorService.fluxMerge();
+
+        StepVerifier.create(mergedFlux)
+                .expectNext("Arka")
+                .expectNext("Mosfik")
+                .expectNextCount(4)
+                .verifyComplete();
+    }
+
+
+    @Test
+    void monoMerge() {
+        var mergedFlux = fluxAndMonoGeneratorService.monoMerge();
+
+        StepVerifier.create(mergedFlux)
+                .expectNext("Arka Bhuiyan")
+                .expectNext("Farhan Zaman")
+                .verifyComplete();
+    }
+
+    @Test
+    void monoMergeWith() {
+        var mergedFlux = fluxAndMonoGeneratorService.monoMergeWith();
+
+        StepVerifier.create(mergedFlux)
+                .expectNext("Arka Bhuiyan")
+                .expectNext("Farhan Zaman")
                 .verifyComplete();
     }
 }

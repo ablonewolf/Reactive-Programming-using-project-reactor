@@ -164,4 +164,45 @@ public class FluxAndMonoGeneratorService {
                         Mono.just("Bhuiyan")
                 ).log();
     }
+
+    public Flux<String> fluxMerge() {
+        var firstFlux = Flux.
+                fromIterable(List.of(
+                        "Arka",
+                        "Farhan",
+                        "Faiaz"
+                )).
+                delayElements(
+                        Duration.ofMillis(150)
+                );
+        var secondFlux = Flux.
+                fromIterable(List.of(
+                        "Mosfik",
+                        "Zareen",
+                        "Ifti"
+                )).
+                delayElements(
+                        Duration.ofMillis(200)
+                );
+
+        return Flux.merge(firstFlux, secondFlux).log();
+    }
+
+    public Flux<String> monoMerge() {
+        var firstMono = Mono.just("Arka Bhuiyan")
+                .delayElement(Duration.ofMillis(200));
+        var secondMono = Mono.just("Farhan Zaman")
+                .delayElement(Duration.ofMillis(500));
+
+        return Flux.merge(firstMono, secondMono).log();
+    }
+
+    public Flux<String> monoMergeWith() {
+        var firstMono = Mono.just("Arka Bhuiyan")
+                .delayElement(Duration.ofMillis(200));
+        var secondMono = Mono.just("Farhan Zaman")
+                .delayElement(Duration.ofMillis(500));
+
+        return firstMono.mergeWith(secondMono).log();
+    }
 }
