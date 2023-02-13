@@ -205,4 +205,49 @@ public class FluxAndMonoGeneratorService {
 
         return firstMono.mergeWith(secondMono).log();
     }
+
+    public Mono<String> monoZip() {
+        var firstName = Mono.just("Arka");
+        var secondName = Mono.just("Bhuiyan");
+
+        return Mono.zip(firstName, secondName, (first, second) -> first + " " + second).log();
+
+    }
+
+    public Flux<String> fluxZip() {
+        var firstNames = Flux.fromIterable(
+                List.of(
+                        "Arka",
+                        "Farhan",
+                        "Akif"
+                )
+        );
+        var lastNames = Flux.fromIterable(
+                List.of(
+                        "Bhuiyan",
+                        "Zaman",
+                        "Azwad"
+                )
+        );
+        var employeeIDs = Flux.fromIterable(
+                List.of(
+                        11512,
+                        11514,
+                        11507
+                )
+        );
+
+        return Flux.zip(firstNames, lastNames, employeeIDs)
+                .map(t4 -> t4.getT1() + " " + t4.getT2() + ", ID : " + t4.getT3())
+                .log();
+    }
+
+    public Mono<String> monoZipWith() {
+        var firstName = Mono.just("Arka");
+        var lastName = Mono.just("Bhuiyan");
+
+        return firstName.zipWith(lastName)
+                .map(t2-> t2.getT1() + " " + t2.getT2())
+                .log();
+    }
 }
