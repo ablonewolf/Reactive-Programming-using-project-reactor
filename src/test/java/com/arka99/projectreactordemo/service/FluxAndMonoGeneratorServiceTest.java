@@ -312,4 +312,32 @@ public class FluxAndMonoGeneratorServiceTest {
                 .expectError(ReactorException.class)
                 .verify();
     }
+
+    @Test
+    void exploreDoOnError() {
+        var doOnError = fluxAndMonoGeneratorService.exploreDoOnError();
+
+        StepVerifier.create(doOnError)
+                .expectNext("ARKA")
+                .expectErrorMessage("Cannot change it to upper case")
+                .verify();
+    }
+
+
+    @Test
+    void exploreMonoOnErrorContinue() {
+        var monoOnErrorContinue = fluxAndMonoGeneratorService.exploreMonoOnErrorContinue("abc");
+
+        StepVerifier.create(monoOnErrorContinue)
+                .verifyComplete();
+    }
+
+    @Test
+    void testExploreMonoOnErrorContinue() {
+        var monoOnErrorContinue = fluxAndMonoGeneratorService.exploreMonoOnErrorContinue("reactor");
+
+        StepVerifier.create(monoOnErrorContinue)
+                .expectNext("REACTOR")
+                .verifyComplete();
+    }
 }

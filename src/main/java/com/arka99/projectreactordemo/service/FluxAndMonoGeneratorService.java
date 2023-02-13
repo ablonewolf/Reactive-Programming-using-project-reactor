@@ -9,6 +9,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Random;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 @Slf4j
@@ -321,6 +322,24 @@ public class FluxAndMonoGeneratorService {
                 .log();
     }
 
+    public Mono<String> exploreMonoOnErrorContinue(String name) {
+        Function<String, String> toUpperCase = string -> {
+            if (string.equals("abc")) {
+                throw new RuntimeException("An error occurred. abc cannot be accepted.");
+            }
+            return string.toUpperCase();
+        };
+        BiConsumer<Throwable, Object> errorContinueFunction = (ex, string) -> {
+            log.error("Exception message is : {}", ex.getMessage());
+            log.error("The String is : {}", string);
+        };
+        return Mono
+                .just(name)
+                .map(toUpperCase)
+                .onErrorContinue(errorContinueFunction)
+                .log();
+    }
+
     public Flux<String> exploreOnErrorMap() {
         Function<String, String> toUpperCase = name -> {
             if (name.equals("Nusaiba"))
@@ -339,5 +358,20 @@ public class FluxAndMonoGeneratorService {
                 .onErrorMap(convertException)
                 .log();
     }
+
+    public Flux<String> exploreDoOnError() {
+        Function<String, String> toUpperCase = name -> {
+            if (name.equals("Nusaiba"))
+                throw new IllegalStateException("Cannot change it to upper case");
+            return name.toUpperCase();
+        };
+        Consumer<Throwable> printException = ex -> log.error(ex.getMessage());
+        return Flux
+                .just("Arka", "Nusaiba", "Farhan", "Zareen")
+                .map(toUpperCase)
+                .doOnError(printException)
+                .log();
+    }
+
 
 }
