@@ -1,5 +1,6 @@
 package com.arka99.projectreactordemo.service;
 
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 
+@Slf4j
 public class FluxAndMonoGeneratorService {
 
     public static void main(String[] args) {
@@ -290,6 +292,16 @@ public class FluxAndMonoGeneratorService {
                 .just("a", "b", "c")
                 .concatWith(Flux.error(new IllegalStateException("An Error Occurred.")))
                 .onErrorReturn("d")
+                .log();
+    }
+
+    public Flux<String> exploreOnErrorResume(Exception exception) {
+        Function<Throwable, Flux<String>> errorResumeFunction = ex -> Flux.just(ex.getMessage());
+
+        return Flux
+                .just("a", "b", "c")
+                .concatWith(Flux.error(exception))
+                .onErrorResume(errorResumeFunction)
                 .log();
     }
 }

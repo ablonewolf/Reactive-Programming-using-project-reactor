@@ -280,4 +280,14 @@ public class FluxAndMonoGeneratorServiceTest {
                 .expectNext("a", "b", "c", "d")
                 .verifyComplete();
     }
+
+    @Test
+    void exploreOnErrorResume() {
+        var onErrorResume = fluxAndMonoGeneratorService.exploreOnErrorResume(new RuntimeException("A Runtime Exception"));
+
+        StepVerifier.create(onErrorResume)
+                .expectNext("a","b","c")
+                .expectNext("A Runtime Exception")
+                .verifyComplete();
+    }
 }
