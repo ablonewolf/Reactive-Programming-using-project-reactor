@@ -279,9 +279,17 @@ public class FluxAndMonoGeneratorService {
 
     public Flux<String> exceptionFlux() {
         return Flux
-                .just("A","B","C")
+                .just("A", "B", "C")
                 .concatWith(Flux.error(new RuntimeException("An Exception Occurred.")))
                 .concatWith(Flux.just("D"))
+                .log();
+    }
+
+    public Flux<String> exploreOnErrorReturn() {
+        return Flux
+                .just("a", "b", "c")
+                .concatWith(Flux.error(new IllegalStateException("An Error Occurred.")))
+                .onErrorReturn("d")
                 .log();
     }
 }
