@@ -51,6 +51,10 @@ public class FluxAndMonoGeneratorService {
                 .fromIterable(List.of("Arka", "Farhan", "Akif", "Nipa", "Zareen", "Mosfikur"))
                 .filter(name -> name.length() > 4)
                 .map(String::toUpperCase)
+                .doOnNext(System.out::println)
+                .doOnSubscribe(System.out::println)
+                .doOnComplete(() -> System.out.println("Inside the complete callback."))
+                .doFinally(System.out::println)
                 .log();
     }
 
