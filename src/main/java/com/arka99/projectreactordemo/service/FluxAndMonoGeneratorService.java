@@ -1,4 +1,4 @@
-package com.learnreactiveprogramming.service;
+package com.arka99.projectreactordemo.service;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

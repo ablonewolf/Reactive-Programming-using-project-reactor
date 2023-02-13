@@ -1,8 +1,8 @@
-package com.learnreactiveprogramming.service;
+package com.arka99.projectreactordemo.service;
 
-import com.learnreactiveprogramming.domain.Revenue;
+import com.arka99.projectreactordemo.domain.Revenue;
 
-import static com.learnreactiveprogramming.util.CommonUtil.delay;
+import static com.arka99.projectreactordemo.util.CommonUtil.delay;
 
 public class RevenueService {
 

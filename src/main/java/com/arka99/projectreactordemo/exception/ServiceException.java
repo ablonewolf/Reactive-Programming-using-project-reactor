@@ -1,4 +1,4 @@
-package com.learnreactiveprogramming.exception;
+package com.arka99.projectreactordemo.exception;
 
 public class ServiceException extends RuntimeException {
     String message;

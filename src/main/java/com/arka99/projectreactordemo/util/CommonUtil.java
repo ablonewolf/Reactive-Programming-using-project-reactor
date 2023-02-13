@@ -1,4 +1,4 @@
-package com.learnreactiveprogramming.util;
+package com.arka99.projectreactordemo.util;
 
 import static java.lang.Thread.sleep;
 

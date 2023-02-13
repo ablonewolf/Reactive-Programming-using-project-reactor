@@ -1,6 +1,6 @@
-package com.learnreactiveprogramming.service;
+package com.arka99.projectreactordemo.service;
 
-import com.learnreactiveprogramming.domain.Review;
+import com.arka99.projectreactordemo.domain.Review;
 import reactor.core.publisher.Flux;
 
 import java.util.List;

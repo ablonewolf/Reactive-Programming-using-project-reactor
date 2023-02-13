@@ -1,4 +1,4 @@
-package com.learnreactiveprogramming.domain;
+package com.arka99.projectreactordemo.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
