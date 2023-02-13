@@ -222,4 +222,43 @@ public class FluxAndMonoGeneratorServiceTest {
                 .expectNext("Farhan Zaman")
                 .verifyComplete();
     }
+
+    @Test
+    void monoZip() {
+        var zippedMono = fluxAndMonoGeneratorService.monoZip();
+
+        StepVerifier.create(zippedMono)
+                .expectNext("Arka Bhuiyan")
+                .verifyComplete();
+    }
+
+    @Test
+    void fluxZip() {
+        var zippedFlux = fluxAndMonoGeneratorService.fluxZip();
+
+        StepVerifier.create(zippedFlux)
+                .expectNext("Arka Bhuiyan, ID : 11512")
+                .expectNextCount(2)
+                .verifyComplete();
+    }
+
+    @Test
+    void monoZipWith() {
+        var zippedWithMono = fluxAndMonoGeneratorService.monoZipWith();
+
+        StepVerifier.create(zippedWithMono)
+                .expectNext("Arka Bhuiyan")
+                .verifyComplete();
+    }
+
+
+    @Test
+    void fluxZipWith() {
+        var zippedWithFlux = fluxAndMonoGeneratorService.fluxZipWith();
+
+        StepVerifier.create(zippedWithFlux)
+                .expectNext("Arka Bhuiyan")
+                .expectNextCount(2)
+                .verifyComplete();
+    }
 }
