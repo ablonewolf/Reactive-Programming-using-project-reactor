@@ -1,5 +1,6 @@
 package com.arka99.projectreactordemo.service;
 
+import com.arka99.projectreactordemo.exception.ReactorException;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -300,5 +301,15 @@ public class FluxAndMonoGeneratorServiceTest {
                 .expectNext("FARHAN")
                 .expectNext("ZAREEN")
                 .verifyComplete();
+    }
+
+    @Test
+    void exploreOnErrorMap() {
+        var onErrorMap = fluxAndMonoGeneratorService.exploreOnErrorMap();
+
+        StepVerifier.create(onErrorMap)
+                .expectNext("ARKA")
+                .expectError(ReactorException.class)
+                .verify();
     }
 }

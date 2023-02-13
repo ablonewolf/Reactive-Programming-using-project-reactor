@@ -1,5 +1,6 @@
 package com.arka99.projectreactordemo.service;
 
+import com.arka99.projectreactordemo.exception.ReactorException;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -307,7 +308,6 @@ public class FluxAndMonoGeneratorService {
     }
 
     public Flux<String> exploreOnErrorContinue() {
-
         Function<String, String> toUpperCase = name -> {
             if (name.equals("Nusaiba"))
                 throw new IllegalStateException("Cannot change it to upper case");
@@ -320,4 +320,24 @@ public class FluxAndMonoGeneratorService {
                 .onErrorContinue(errorContinueFunction)
                 .log();
     }
+
+    public Flux<String> exploreOnErrorMap() {
+        Function<String, String> toUpperCase = name -> {
+            if (name.equals("Nusaiba"))
+                throw new IllegalStateException("Cannot change it to upper case");
+            return name.toUpperCase();
+        };
+
+        Function<Throwable, Throwable> convertException = (ex) ->
+        {
+            log.error("Exception is ", ex);
+            return new ReactorException(ex, ex.getMessage());
+        };
+        return Flux
+                .just("Arka", "Nusaiba", "Farhan", "Zareen")
+                .map(toUpperCase)
+                .onErrorMap(convertException)
+                .log();
+    }
+
 }
